@@ -1,5 +1,5 @@
 
-name: Semgrep
+name: Semgrep CI Scan
 on:
   push:
     branches: [ "main" ]
