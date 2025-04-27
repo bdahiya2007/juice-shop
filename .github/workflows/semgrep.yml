@@ -16,20 +16,44 @@ jobs:
     env:
       SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
     container:
-      image: semgrep/semgrep
+       image: returntocorp/semgrep
+      #image: semgrep/semgrep
     steps:
     - name : Checkout code
       uses: actions/checkout@v4
-    - name : Setup Python
-      uses: actions/checkout@v4
-      with:
-          python-version: '3.x'
-          
-    - name : Install Semgrep
-      run: python3 -m pip install semgrep 
 
-    - name : Run Semgrep
-      run: semgrep --config auto --error || true  
+      # step 2
+    - name: full scan
+      run: |
+        semgrep \
+          --sarif --output report.sarif \
+          --metrics=off \
+          --config="p/default"
+
+        # step 3
+        
+        - name: save report as pipeline artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: report.sarif
+            path: report.sarif
+            
+        # step 4
+        - name: Download report
+          uses: actions/download-artifact@v2
+          with: 
+            name: report.sarif
+      
+   # - name : Setup Python
+   #   uses: actions/checkout@v4
+    #  with:
+    #      python-version: '3.x'
+          
+    #- name : Install Semgrep
+    #  run: python3 -m pip install semgrep 
+
+    #- name : Run Semgrep
+    #  run: semgrep --config auto --error || true  
       
   #  - run: semgrep login
    # - run: semgrep ci
