@@ -1,6 +1,5 @@
 
 name: Semgrep
-
 on:
   push:
     branches: [ "main" ]
@@ -20,5 +19,10 @@ jobs:
       image: semgrep/semgrep
     steps:
     - uses: actions/checkout@v4
-    - run: semgrep login
-    - run: semgrep ci
+  #  - run: semgrep login
+   # - run: semgrep ci
+   
+    - name: Run Semgrep Scan and Upload to Semgrep Cloud
+      uses: returntocorp/semgrep-action@v1
+      with:
+        publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
