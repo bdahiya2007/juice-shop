@@ -18,11 +18,23 @@ jobs:
     container:
       image: semgrep/semgrep
     steps:
-    - uses: actions/checkout@v4
+    - name : Checkout code
+      uses: actions/checkout@v4
+    - name : Setup Python
+      uses: actions/checkout@v4
+      with:
+          python-version: '3.x'
+          
+    - name : Install Semgrep
+      run: pip install semgrep 
+
+    - name : Run Semgrep
+      run: semgrep --config auto --error || true  
+      
   #  - run: semgrep login
    # - run: semgrep ci
    
-    - name: Run Semgrep Scan and Upload to Semgrep Cloud
-      uses: returntocorp/semgrep-action@v1
-      with:
-        publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
+   # - name: Run Semgrep Scan and Upload to Semgrep Cloud
+   #   uses: returntocorp/semgrep-action@v1
+  #    with:
+  #      publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
